@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>realend2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #4488dd;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            font-family: system-ui,-apple-system,"Microsoft Yahei",sans-serif;
+        }
+        .box {
+            max-width: 780px;
+            text-align: center;
+            color: #000000;
+            font-size: 20px;
+            line-height: 2;
+        }
+        .para {
+            display: none;
+            margin-bottom: 12px;
+        }
+        .small-note {
+            margin-top:40px;
+            font-size:14px;
+            line-height:1.6;
+        }
+    </style>
+</head>
+<body>
+<div class="box" id="box">
+    <div class="para">林屿没有丝毫犹豫，填入了沈医生的生辰八字。</div>
+    <div class="para">对于他而言，沈医生是害了你妹妹的罪人。</div>
+    <div class="para">你自然没有愧疚之情。</div>
+    <div class="para">成功了。</div>
+    <div class="para">你立刻扭过头看妹妹。</div>
+    <div class="para">没有醒来。</div>
+    <div class="para">你这时明白，沈医生的五感早在他与祂契约的时候就在缺失了……</div>
+    <div class="para">......</div>
+    <div class="para">出门的时候，林屿回头看了一眼妹妹。</div>
+    <div class="para">“林晚，我会将你带回来的”</div>
+    <div class="para">没有回答。</div>
+    <div class="para">假如林晚有一天真的醒来。</div>
+    <div class="para">自己要以什么身份面对她呢？</div>
+    <div class="para">哥哥？杀人犯？</div>
+    <div class="para">他不知道。</div>
+    <div class="para">他只想让妹妹活着。</div>
+    <div class="para">而现在，他要成为第二个沈医生了</div>
+    <div class="para">……</div>
+    <div class="para">调查结束，你查明了事件的真相。</div>
+    <div class="para">realend2</div>
+
+    <div class="para small-note">
+本项目开通爱发电自愿赞助，如果觉得本作好玩的，欢迎量力而行支持开发。<br>
+提示：仅为个人自愿赞助，不属于慈善捐款，无捐赠票据。资金由爱发电平台处理，平台收取合计6%服务费，请理性支持。<br>
+爱发电：https://www.ifdian.net/a/argjy?utm_source=copylink&utm_medium=link
+    </div>
+</div>
+
+<script>
+const paras = document.querySelectorAll(".para");
+let index = 0;
+
+function showNext(){
+    if(index < paras.length){
+        paras[index].style.display = "block";
+        index++;
+        setTimeout(showNext,2000);
+    }
+}
+showNext();
+</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>uuu</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+    background:#000000;
+    color:#ffffff;
+    min-height:100vh;
+    font-family:system-ui,-apple-system,"Microsoft Yahei",sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:30px 20px;
+    text-align:center;
+}
+.line-item{
+    font-size:24px;
+    margin:12px 0;
+    opacity:0;
+}
+.strike{
+    text-decoration:line-through;
+}
+</style>
+</head>
+<body>
+<div id="container"></div>
+
+<script>
+const textList = [
+    "从那件事情过后，我们一家终于回到了原来的模样。",
+    "妹妹也解开了心结，开始交更多的朋友。",
+    "虽然还是老粘着我就是了。",
+    "......",
+    "所以，这一切是真的吗？",
+    "太奇怪了。",
+    "如果对方都有夺走五感的超自然力量。",
+    "又怎么会被区区一个大人，两个小孩击败呢？",
+    "......",
+    "你说对吧，玩家？",
+    "......",
+    "开个玩笑，我只是觉得这一切很像一场游戏。",
+    "这一定是最完美的happy ending",
+    "无论有没有那个玩家，我都想说：谢谢你们，给了我一个最完美的结局。",
+    "......",
+    "不多写了，妹妹催我去做饭了。",
+    "有缘再见。",
+    "",
+    "<span class=\"strike\">调查</span>游玩结束，作者和林屿谢谢你们的游玩"
+];
+
+const container = document.getElementById("container");
+let index = 0;
+
+function showNext(){
+    if(index >= textList.length) return;
+    const div = document.createElement("div");
+    div.className = "line-item";
+    div.innerHTML = textList[index];
+    div.style.opacity = "1";
+    container.appendChild(div);
+    index++;
+    setTimeout(showNext,2000);
+}
+
+showNext();
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>badend2</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+html,body {
+    height:100%;
+    font-family: system-ui,-apple-system,"Microsoft Yahei",sans-serif;
+    background:#000000;
+}
+
+/* === win‑frame窗口UI导航（固定顶部） === */
+.win-frame{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+}
+.win-titlebar{
+    height:32px;
+    background:#2b579a;
+    color:#ffffff;
+    display:flex;
+    align-items:center;
+    padding:0 10px;
+}
+.win-title{
+    flex:1;
+    font-size:13px;
+}
+.win-buttons{
+    display:flex;
+    gap:4px;
+}
+.win-btn{
+    width:26px;
+    height:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    cursor:default;
+    pointer-events:none;
+}
+.win-btn-min{
+    background:#4472b8;
+}
+.main-container{
+    background:rgba(0,0,0,0.75);
+    padding:14px 40px;
+}
+.top-header{
+    margin-bottom:12px;
+}
+.hospital-name{
+    font-size:26px;
+    font-weight:bold;
+    color:#ff2222;
+}
+.hospital-sub{
+    font-size:14px;
+    opacity:0.85;
+    color:#ff2222;
+    margin-top:4px;
+}
+.nav-bar{
+    background:rgba(10,10,10,0.75);
+    border-bottom:1px solid #ff2222;
+    display:flex;
+    justify-content: space-around;
+    padding:12px 40px;
+    width:100%;
+}
+.nav-item{
+    font-size:15px;
+    color:#ff2222;
+    cursor:default;
+    pointer-events:none;
+}
+.nav-item:hover{
+    color:#ff8888;
+}
+
+/* 滚动剧情容器 */
+.wrap{
+    height:100%;
+    display:flex;
+    flex-direction:column;
+}
+.scroll-wrap{
+    flex:1;
+    overflow-y:auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/*文本展示区域 居中大字*/
+.story-box{
+    min-height:calc(100vh - 200px);
+    width:90%;
+    max-width:780px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:40px 20px 80px;
+    margin:0 auto;
+}
+.para{
+    font-size:24px;
+    color:#ff2222;
+    line-height:2.3;
+    text-align:center;
+    opacity:0;
+    transition:opacity 1s ease;
+    margin:10px 0;
+}
+.para.show{
+    opacity:1;
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="win-frame">
+        <div class="win-titlebar">
+            <div class="win-title">inside</div>
+            <div class="win-buttons">
+                <div class="win-btn win-btn-min">−</div>
+            </div>
+        </div>
+        <div class="main-container">
+            <div class="top-header">
+                <div class="hospital-name">。。【‘’心理医院</div>
+                <div class="hospital-sub">五感奉于神明，恶念终为真念</div>
+            </div>
+            <div class="nav-bar">
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+            </div>
+        </div>
+    </div>
+    <div class="scroll-wrap">
+        <div class="story-box" id="storyContainer">
+            <div class="para">林屿查清所有真相，看着仅剩几小时的献祭时效，彻底陷入崩溃。</div>
+            <div class="para">愧疚淹没了他：妹妹独自承受情绪痛苦整整已经不知多久，他身为最亲近的哥哥，一无所知、一无所做。</div>
+            <div class="para">他可以用自己的命换回妹妹，可极致的愧疚让他彻底自我否定：</div>
+            <div class="para">就算妹妹醒来又如何？她会永远记得这场无妄之灾，永远活在着该死的阴影里，永远知道是哥哥牺牲了性命才换来她的余生。</div>
+            <div class="para">她的人生，会被这份沉重的救赎彻底困住，终生活在愧疚之中。</div>
+            <div class="para">最终，林屿放弃了献祭救赎的机会。</div>
+            <div class="para">在妹妹昏迷的房间外，在漫天夜色里，被无尽悔恨包裹的林屿，选择了自我了结。</div>
+            <div class="para">恍惚中，看见了她在前方等着他，</div>
+            <div class="para">他们再也不会分开了。</div>
+            <div class="para"></div>
+            <div class="para">调查结束，你查明了事件的真相？</div>
+            <div class="para">badend2</div>
+        </div>
+    </div>
+</div>
+
+<script>
+const container = document.getElementById('storyContainer');
+const paragraphs = Array.from(container.querySelectorAll('.para'));
+
+let index = 0;
+function showNext(){
+    if(index >= paragraphs.length) return;
+    paragraphs[index].classList.add('show');
+    index++;
+    setTimeout(showNext,2000);
+}
+setTimeout(showNext,1000);
+</script>
+</body>
+</html>

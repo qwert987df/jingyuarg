@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>egg</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+    background:#39b54a;
+    color:#000000;
+    min-height:100vh;
+    font-family:system-ui,-apple-system,"Microsoft Yahei",sans-serif;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:30px 20px;
+    text-align:center;
+}
+.line-item{
+    font-size:24px;
+    margin:12px 0;
+    opacity:0;
+}
+.click-word{
+    font-weight:bold;
+    cursor:pointer;
+    /*去掉下划线*/
+    text-decoration:none;
+}
+</style>
+</head>
+<body>
+<div id="container"></div>
+
+<script>
+const textList = [
+    "看着屏幕上泛红的文字，林屿深吸了一口气。",
+    "他要找回妹妹。",
+    "可是该怎么找？",
+    "敲门声划破了沉默。",
+    "林屿的呼吸顿了一下，随后自嘲般的笑了笑。",
+    "现在还有什么好怕的呢？或许自己去找妹妹会更好。",
+    "他打开门，只有两个身影。",
+    "“林屿哥，我们有办法解决林晚的昏迷。”",
+    "看着眼前从白鹿山全身而退的两人，说不定，真的有办法！",
+    "......",
+    "“所以你们是说，去白鹿山的山神寺里，用那些村民之前献祭的人的愿力换来山神与无官上神打一架？”",
+    "“目前看来，这是我们唯一的方法。”",
+    "......",
+    "夜晚的山风冷的刺骨，三人聚集在寺庙内，这个曾经作为无数人梦魇的地方如今却成为了他们最后的救命稻草。",
+    "“好了。”吴禹晨和马飞用打火机烧掉了几张有“无官上神”字样的符纸，说道。",
+    "......",
+    "回到家，林屿看着床上昏迷的妹妹，此刻，他什么也做不到，唯有祈祷。",
+    "不知过了多久，床上似乎传来了动静。",
+    "林屿还没睁开眼，一个人影便扑了上来。",
+    "“哥......哥，我回来了，我还以为再也见不到你了，呜呜呜......”",
+    "听到熟悉的声音，林屿笑了，这是林晚昏迷之后第一次笑。",
+    "他也搂住了妹妹，轻声呢喃：“咱们以后不会分开了。”",
+    "......",
+    "“所以，无官上神真的没肘赢山神？麻烦了啊。”",
+    "“嗯，那山神的力量将比之前强的多，可能不止存在于山里了。”",
+    "“诶，还不知道有多少诡异事件呢，走一步是一步吧。”",
+    "“至少他们二人团聚了。”",
+    "调查结束，你<span class=\"click-word\" id=\"changeWord\">查明</span>了事件的真相"
+];
+
+const container = document.getElementById("container");
+let index = 0;
+let state = 0; //0=查明，1=打破
+
+function showNext(){
+    if(index >= textList.length) return;
+    const div = document.createElement("div");
+    div.className = "line-item";
+    div.innerHTML = textList[index];
+    div.style.opacity = "1";
+    container.appendChild(div);
+    index++;
+    setTimeout(showNext,3000);
+}
+
+showNext();
+
+document.addEventListener('click',function(e){
+    if(e.target.id === "changeWord"){
+        if(state === 0){
+            e.target.innerText = "打破";
+            state = 1;
+        }else if(state === 1){
+            location.href = "uuu.html";
+        }
+    }
+})
+</script>
+</body>
+</html>

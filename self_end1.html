@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>self_end</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+html,body {
+    width:100%;
+    height:100%;
+    font-family: system-ui,-apple-system,"Microsoft Yahei",sans-serif;
+    background:#000000;
+}
+
+/* === win‑frame窗口UI导航（固定模板，横向铺满） === */
+.win-frame{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    max-width:100%;
+}
+.win-titlebar{
+    height:32px;
+    background:#2b579a;
+    color:#ffffff;
+    display:flex;
+    align-items:center;
+    padding:0 10px;
+}
+.win-title{
+    flex:1;
+    font-size:13px;
+}
+.win-buttons{
+    display:flex;
+    gap:4px;
+}
+.win-btn{
+    width:26px;
+    height:26px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:14px;
+    cursor:default;
+    pointer-events:none;
+}
+.win-btn-min{
+    background:#4472b8;
+}
+.main-container{
+    background:rgba(0,0,0,0.75);
+    padding:14px 40px;
+}
+.top-header{
+    margin-bottom:12px;
+}
+.hospital-name{
+    font-size:26px;
+    font-weight:bold;
+    color:#ff2222;
+}
+.hospital-sub{
+    font-size:14px;
+    opacity:0.85;
+    color:#ff2222;
+    margin-top:4px;
+}
+.nav-bar{
+    background:rgba(10,10,10,0.75);
+    border-bottom:1px solid #ff2222;
+    display:flex;
+    justify-content: space-around;
+    padding:12px 40px;
+    width:100%;
+}
+.nav-item{
+    font-size:15px;
+    color:#ff2222;
+    cursor:default;
+    pointer-events:none;
+}
+.nav-item:hover{
+    color:#ff8888;
+}
+
+/*文本展示区域*/
+.story-box{
+    min-height:65vh;
+    width:90%;
+    max-width:750px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:20px;
+    margin:0 auto;
+}
+.para{
+    font-size:22px;
+    color:#ff2222;
+    line-height:2.2;
+    text-align:center;
+    opacity:0;
+    transition:opacity 1s ease;
+    margin:8px 0;
+}
+.para.show{
+    opacity:1;
+}
+</style>
+</head>
+<body>
+    <div class="win-frame">
+        <div class="win-titlebar">
+            <div class="win-title">inside</div>
+            <div class="win-buttons">
+                <div class="win-btn win-btn-min">−</div>
+            </div>
+        </div>
+        <div class="main-container">
+            <div class="top-header">
+                <div class="hospital-name">。。【‘’心理医院</div>
+                <div class="hospital-sub">五感奉于神明，恶念终为真念</div>
+            </div>
+            <div class="nav-bar">
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+                <div class="nav-item">无官上神</div>
+            </div>
+            <div class="story-box" id="storyContainer">
+                <div class="para">林屿查清所有真相，却异常地冷静。</div>
+                <div class="para">他的心里早就有答案了，不是吗？</div>
+                <div class="para">没有犹豫，他选择了自我献祭。</div>
+                <div class="para">成功了。</div>
+                <div class="para">他躺在床上，躺在妹妹的旁边。</div>
+                <div class="para">林屿的意识快速消散，身体机能飞速衰败。</div>
+                <div class="para">在冰冷的床上，唯一能带来温暖的只有妹妹那小小的身子，脑海里全是从小到大和妹妹相伴的碎片：</div>
+                <div class="para">替她挡雨、陪她熬夜刷题、带她看海边的星星、听她软软地喊哥哥。</div>
+                <div class="para">“再见了，妹妹，好好活着。”这是林屿最后一个念头。</div>
+                <div class="para">寂静的夜笼罩了一切。</div>
+                <div class="para">......</div>
+                <div class="para">林晚睁开眼</div>
+                <div class="para">世界完好如初，阳光依旧温暖，她拥有了重生的人生，却永远失去了全世界最爱她的人。</div>
+                <div class="para">在兄妹二人曾经看海的海边，林晚穿着哥哥最喜欢的白色卫衣，在落日余晖中结束了自己的生命。</div>
+                <div class="para">恍惚中，看见了他在前方等她</div>
+                <div class="para">他们再也不会分开了。</div>
+                <div class="para"></div>
+                <div class="para">调查结束 ，你查明了事件的真相？</div>
+                <div class="para">badend1</div>
+            </div>
+        </div>
+    </div>
+
+<script>
+//移除全部透镜相关代码，只保留逐段播放
+const container = document.getElementById('storyContainer');
+const paragraphs = Array.from(container.querySelectorAll('.para'));
+
+let index = 0;
+function showNext(){
+    if(index >= paragraphs.length) return;
+    paragraphs[index].classList.add('show');
+    index++;
+    setTimeout(showNext,2000);
+}
+//页面载入后延迟1秒开始播放
+setTimeout(showNext,1000);
+</script>
+</body>
+</html>

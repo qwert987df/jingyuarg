@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>yanguang</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+body{
+    min-height:100vh;
+    background:#000 url("./bg1.jpg") center/cover no-repeat;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    color:#ff2222;
+    font-size:26px;
+    font-weight:bold;
+    line-height:2.2;
+    padding:30px;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+}
+/* 背景模糊遮罩层：初始只占位，不模糊，无蒙版 */
+#bgBlurLayer{
+    position:fixed;
+    inset:0;
+    z-index:997;
+    pointer-events:none;
+    display:none;
+    background:#000 var(--bg-url,url("./bg1.jpg")) center/cover no-repeat;
+}
+#bgBlurLayer.lens-on{
+    display:block;
+    filter: blur(6px);
+    mask-image: radial-gradient(circle 70px at var(--mx,0px) var(--my,0px), transparent 0%, #fff 100%);
+    -webkit-mask-image: radial-gradient(circle 70px at var(--mx,0px) var(--my,0px), transparent 0%, #fff 100%);
+}
+
+#textWrap{
+    position:relative;
+    z-index:999;
+}
+.text-box{
+    position:relative;
+}
+/* 初始不模糊，透镜开启才模糊 */
+.text-blur{
+}
+.lens-on .text-blur{
+    filter: blur(6px);
+}
+
+.text-clear{
+    position:absolute;
+    top:0;
+    left:0;
+    mask-image: radial-gradient(circle 70px at var(--mx,0px) var(--my,0px), #fff 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(circle 70px at var(--mx,0px) var(--my,0px), #fff 0%, transparent 100%);
+    pointer-events:none;
+    display:none;
+}
+.lens-on .text-clear{
+    display:block;
+}
+</style>
+</head>
+<body>
+<div id="bgBlurLayer"></div>
+<div id="textWrap" class="text-box">
+    <div class="text-blur" id="contentBlur"></div>
+    <div class="text-clear" id="contentClear"></div>
+</div>
+
+<audio id="aud" src="./sound.mp3">
+
+<script>
+const textArr = [
+    "记忆里，虚幻的验光机钻入了你的头部",
+    "视孔里的图像吸引了你，一片麦田，一条小径，路的尽头梦幻般的漂浮着一个五彩斑斓的热气球",
+    "仿佛你儿时的梦境",
+    "那个网页褪去了伪装",
+    "你的视觉被剥夺",
+    "五感缺一",
+    "你逐渐感到恐慌…",
+    "你知道，你没有退路了"
+];
+const bgs = ["./bg1.jpg","./bg2.jpg","./bg3.jpg"];
+
+let ptr = 0;
+let triggerBg = false;
+let lensActive = false;
+let unlockAfterBg3 = false;
+
+const textWrap = document.getElementById("textWrap");
+const bgBlurLayer = document.getElementById("bgBlurLayer");
+const contentBlur = document.getElementById("contentBlur");
+const contentClear = document.getElementById("contentClear");
+const aud = document.getElementById("aud");
+
+//鼠标移动同步更新两处蒙版坐标
+document.addEventListener('mousemove', function(e){
+    if(!lensActive) return;
+    const rect = textWrap.getBoundingClientRect();
+    const mx = `${e.clientX - rect.left}px`;
+    const my = `${e.clientY - rect.top}px`;
+    textWrap.style.setProperty('--mx', mx);
+    textWrap.style.setProperty('--my', my);
+    bgBlurLayer.style.setProperty('--mx', e.clientX+"px");
+    bgBlurLayer.style.setProperty('--my', e.clientY+"px");
+});
+
+document.body.addEventListener('click', function(){
+    if(ptr >= textArr.length){
+        location.href="inside.html";
+        return;
+    }
+    if(ptr >= 4 && !unlockAfterBg3){
+        return;
+    }
+
+    const pBlur = document.createElement("div");
+    pBlur.className = "text-line";
+    pBlur.textContent = textArr[ptr];
+    contentBlur.appendChild(pBlur);
+
+    const pClear = document.createElement("div");
+    pClear.className = "text-line";
+    pClear.textContent = textArr[ptr];
+    contentClear.appendChild(pClear);
+
+    if(ptr === 3 && !triggerBg){
+        triggerBg = true;
+        document.body.style.background = `#000 url(${bgs[1]}) center/cover no-repeat`;
+        bgBlurLayer.style.setProperty('--bg-url',`url(${bgs[1]})`);
+        aud.currentTime = 0;
+        aud.play().catch(()=>{});
+
+        setTimeout(()=>{
+            document.body.style.background = `#000 url(${bgs[2]}) center/cover no-repeat`;
+            bgBlurLayer.style.setProperty('--bg-url',`url(${bgs[2]})`);
+            aud.pause();
+            unlockAfterBg3 = true;
+            //切换bg3立刻开启透镜，无延时
+            lensActive = true;
+            textWrap.classList.add("lens-on");
+            bgBlurLayer.classList.add("lens-on");
+            bgBlurLayer.style.display = "block";
+        },2000);
+    }
+    ptr++;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>结局</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #4488dd;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            font-family: system-ui,-apple-system,"Microsoft Yahei",sans-serif;
+        }
+        .box {
+            max-width: 780px;
+            text-align: center;
+            color: #000000;
+            font-size: 20px;
+            line-height: 2;
+        }
+        .para {
+            display: none;
+            margin-bottom: 12px;
+        }
+        .small-note {
+            margin-top:40px;
+            font-size:14px;
+            line-height:1.6;
+        }
+    </style>
+</head>
+<body>
+<div class="box" id="box">
+    <div class="para">林屿没有丝毫犹豫，填入了沈医生的生辰八字。</div>
+    <div class="para">对于他而言，沈医生是害了你妹妹的罪人。</div>
+    <div class="para">你自然没有愧疚之情。</div>
+    <div class="para">成功了。</div>
+    <div class="para">你立刻扭过头看妹妹。</div>
+    <div class="para">没有醒来。</div>
+    <div class="para">你这时明白，沈医生的五感早在他与祂契约的时候就在缺失了……</div>
+    <div class="para">......</div>
+    <div class="para">难道自己要为了妹妹而像沈医生那样沾满鲜血吗？</div>
+    <div class="para">他不知道。</div>
+    <div class="para">......</div>
+    <div class="para">晚上，心力交瘁的林屿昏睡过去，坠入梦境。</div>
+    <div class="para">四下一片朦胧白雾，林晚静静站在前方，神情温和，却带着挥之不去的虚无感。</div>
+    <div class="para">“妹妹，真的是你吗？”林屿的呼吸停了一瞬。</div>
+    <div class="para">“哥，千万不要想着寻找其他人，不要继续献祭了。”林晚的声音带着请求。</div>
+    <div class="para">“我只是想让真正的你回来，我只有这一条路可以尝试。”</div>
+    <div class="para">“放下这种方式吧，哥。不要为了我，不断踏破底线。”</div>
+    <div class="para">话音落下，白雾快速翻涌，林晚的轮廓一点点消散。</div>
+    <div class="para">......</div>
+    <div class="para">这些年来，林屿有了一个专门调查诡异事件的副业，在不断的寻找中，他找到了两个方法。</div>
+    <div class="para">第一个是想办法让两个“神”互相攻击。</div>
+    <div class="para">第二个......</div>
+    <div class="para">林屿走在海边，看着日落，回想起和妹妹看海。</div>
+    <div class="para">恍惚中，那个人影似乎又出现在眼前。</div>
+    <div class="para">他笑了笑。</div>
+    <div class="para">又消失不见。</div>
+    <div class="para">或许妹妹还在一个无人知晓的地方等他呢。</div>
+    <div class="para">说不定呢。</div>
+    <div class="para">......</div>
+    <div class="para">调查结束，你查明了事件的真相。</div>
+    <div class="para">realend1</div>
+
+    <div class="para small-note">
+本项目开通爱发电自愿赞助，如果觉得本作好玩的，欢迎量力而行支持开发。<br>
+提示：仅为个人自愿赞助，不属于慈善捐款，无捐赠票据。资金由爱发电平台处理，平台收取合计6%服务费，请理性支持。<br>
+爱发电：https://www.ifdian.net/a/argjy?utm_source=copylink&utm_medium=link
+    </div>
+</div>
+
+<script>
+const paras = document.querySelectorAll(".para");
+let index = 0;
+
+function showNext(){
+    if(index < paras.length){
+        paras[index].style.display = "block";
+        index++;
+        setTimeout(showNext,2000);
+    }
+}
+showNext();
+</script>
+</body>
+</html>

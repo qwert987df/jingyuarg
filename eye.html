@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eye</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #000000;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ff2222;
+            font-size: 26px;
+            line-height: 2.2;
+            padding: 30px;
+            cursor: pointer;
+        }
+        .text-line {
+            text-align: center;
+            margin: 6px 0;
+        }
+    </style>
+</head>
+<body>
+<div id="box"></div>
+
+<script>
+const lines = [
+    "你试着如同抑郁患者静心那样",
+    "从抽屉里拿出小时候和妹妹玩捉迷藏用的眼罩",
+    "不算太大，勉强能遮上眼",
+    "屏蔽一感，你感到空前的宁静",
+    "静下心……",
+    "可脑子里止不住的想起关于妹妹的回忆",
+    "回想到眼睛",
+    "对了",
+    "你们远眺远方的山岗，畅谈着理想",
+    "你还想起了小时候的验光流程"
+];
+
+let index = 0;
+const box = document.getElementById('box');
+
+document.body.addEventListener('click', () => {
+    if(index >= lines.length){
+        //全部输出完毕，跳转验光页面
+        location.href = "yanguang.html";
+        return;
+    }
+    const div = document.createElement('div');
+    div.className = "text-line";
+    div.textContent = lines[index];
+    box.appendChild(div);
+    index++;
+});
+</script>
+</body>
+</html>

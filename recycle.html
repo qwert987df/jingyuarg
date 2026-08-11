@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>回收站</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            user-select:none;
+        }
+        html,body{
+            width:100%;
+            height:100%;
+            overflow:hidden;
+            font-family:system-ui,-apple-system,sans-serif;
+        }
+        .win-frame{
+            width:100%;
+            height:100%;
+            display:flex;
+            flex-direction:column;
+        }
+        .win-titlebar{
+            height:32px;
+            background:#2b579a;
+            color:#fff;
+            display:flex;
+            align-items:center;
+            padding:0 10px;
+        }
+        .win-title{
+            flex:1;
+            font-size:13px;
+        }
+        .win-buttons{
+            display:flex;
+            gap:4px;
+        }
+        .win-btn{
+            width:26px;
+            height:26px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            font-size:14px;
+        }
+        .win-btn-min{
+            background:#4472b8;
+        }
+        .recycle-container{
+            flex:1;
+            background:#ffffff;
+            padding:20px;
+            overflow:auto;
+        }
+        .file-item{
+            width:80px;
+            text-align:center;
+            cursor:pointer;
+        }
+        .file-icon{
+            width:48px;
+            height:48px;
+            margin:0 auto 6px;
+            font-size:40px;
+        }
+        .file-name{
+            font-size:12px;
+        }
+        .file-item.selected{
+            background:rgba(0,120,215,0.2);
+        }
+
+        /*模态弹窗*/
+        .modal-wrap{
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.4);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            z-index:999;
+            display:none;
+        }
+        .modal-wrap.show{
+            display:flex;
+        }
+        .modal-box{
+            width:340px;
+            background:#fff;
+            border:1px solid #999;
+            box-shadow:0 4px 12px #0003;
+        }
+        .modal-head{
+            height:30px;
+            background:#2b579a;
+            color:white;
+            display:flex;
+            align-items:center;
+            padding:0 10px;
+            font-size:13px;
+        }
+        .modal-body{
+            padding:16px;
+        }
+        .modal-body p{
+            font-size:14px;
+            margin-bottom:10px;
+        }
+        .modal-body input{
+            width:100%;
+            padding:6px 8px;
+            font-size:14px;
+            border:1px solid #aaa;
+            margin-bottom:12px;
+        }
+        .modal-buttons{
+            display:flex;
+            justify-content:flex-end;
+            gap:8px;
+        }
+        .modal-buttons button{
+            padding:4px 14px;
+            cursor:pointer;
+        }
+
+        /*解压进度条*/
+        .progress-wrap{
+            display:none;
+        }
+        .progress-wrap.show{
+            display:block;
+        }
+        .progress-desc{
+            font-size:13px;
+            margin-bottom:6px;
+        }
+        .progress-bar-bg{
+            width:100%;
+            height:18px;
+            background:#ddd;
+            border:1px solid #999;
+        }
+        .progress-bar-fill{
+            height:100%;
+            width:0%;
+            background:#0078d7;
+            transition:width 4s linear;
+        }
+    </style>
+</head>
+<body>
+<div class="win-frame">
+    <div class="win-titlebar">
+        <div class="win-title">回收站</div>
+        <div class="win-buttons">
+            <div class="win-btn win-btn-min" onclick="location.href='index.html'">−</div>
+        </div>
+    </div>
+    <div class="recycle-container">
+        <div class="file-item" id="zipFile">
+            <div class="file-icon">📦</div>
+            <div class="file-name">jingyu.7z</div>
+        </div>
+    </div>
+</div>
+
+<!--密码弹窗-->
+<div class="modal-wrap" id="pwdModal">
+    <div class="modal-box">
+        <div class="modal-head">输入压缩包密码</div>
+        <div class="modal-body">
+            <p>请输入 jingyu.7z 的解压密码：</p >
+            <input type="password" id="pwdInput" placeholder="输入密码">
+            <div class="progress-wrap" id="progressWrap">
+                <div class="progress-desc">正在解压 jingyu.7z ...</div>
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" id="progressFill"></div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button id="btnConfirm">确定</button>
+                <button id="btnCancel">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+//====================安全防护脚本====================
+//禁止鼠标右键
+document.oncontextmenu = function(){return false;};
+//屏蔽快捷键 F12、Ctrl+U、Ctrl+Shift+I、Ctrl+Shift+J
+document.onkeydown = function(e){
+    e = e || window.event;
+    if(e.keyCode===123) return false; //F12
+    if(e.ctrlKey && e.keyCode===85) return false; //Ctrl+U
+    if(e.ctrlKey && e.shiftKey && (e.keyCode===73||e.keyCode===74)) return false;
+};
+//禁止浏览器回退，无法返回上一页
+history.pushState(null, null, window.location.href);
+window.addEventListener('popstate', function () {
+    history.pushState(null, null, window.location.href);
+});
+//====================================================
+
+const zipFile = document.getElementById('zipFile');
+const pwdModal = document.getElementById('pwdModal');
+const pwdInput = document.getElementById('pwdInput');
+const progressWrap = document.getElementById('progressWrap');
+const progressFill = document.getElementById('progressFill');
+const btnConfirm = document.getElementById('btnConfirm');
+const btnCancel = document.getElementById('btnCancel');
+
+//双击7z弹出密码框
+zipFile.ondblclick = ()=>{
+    pwdModal.classList.add('show');
+    pwdInput.value = '';
+    progressWrap.classList.remove('show');
+    progressFill.style.width = '0%';
+};
+//取消关闭弹窗
+btnCancel.onclick = ()=>{
+    pwdModal.classList.remove('show');
+};
+
+btnConfirm.onclick = ()=>{
+    const inputPwd = pwdInput.value.trim();
+    const rightPwd = "9634711";
+    if(inputPwd !== rightPwd){
+        alert("密码错误，请重新输入！");
+        return;
+    }
+    //密码正确：显示解压进度条，4秒
+    progressWrap.classList.add('show');
+    progressFill.style.width = '100%';
+    //4000ms解压完成
+    setTimeout(()=>{
+        //本地存储标记：解压完成，桌面显示静愈心理医院图标
+        localStorage.setItem("unzipJingyu","true");
+        alert("解压完成！回到桌面可以看到【静愈心理医院】应用");
+        pwdModal.classList.remove('show');
+    },4000);
+}
+</script>
+</body>
+</html>

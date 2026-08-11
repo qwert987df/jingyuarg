@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>桌面</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        /*桌面背景 全屏铺满 */
+        .desktop {
+            width: 100%;
+            height: calc(100% - 40px);
+            background: url("./bg.jpg") no-repeat center center;
+            background-size: cover;
+            position: relative;
+            padding:20px;
+        }
+        /*桌面图标*/
+        .desktop-icon{
+            width:80px;
+            text-align:center;
+            color:#fff;
+            cursor:pointer;
+            position:absolute;
+        }
+        .desktop-icon .icon-box{
+            width:48px;
+            height:48px;
+            margin:0 auto 6px;
+        }
+        .desktop-icon .icon-box img{
+            width:100%;
+            height:100%;
+            object-fit:contain;
+        }
+        .desktop-icon span{
+            font-size:12px;
+            text-shadow:0 0 2px #000;
+        }
+        .desktop-icon.selected{
+            background:rgba(255,255,255,0.25);
+        }
+
+        /*任务栏*/
+        .taskbar{
+            width:100%;
+            height:40px;
+            background:#2b579a;
+            display:flex;
+            align-items:center;
+            position:fixed;
+            bottom:0;
+            left:0;
+            color:#fff;
+        }
+        .start-btn{
+            width:50px;
+            height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:22px;
+            cursor:pointer;
+        }
+        .start-btn:hover{
+            background:#4068a8;
+        }
+        .taskbar-apps{
+            flex:1;
+            display:flex;
+            height:100%;
+        }
+        .task-app-item{
+            height:100%;
+            min-width:50px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            font-size:20px;
+        }
+        .task-app-item:hover{
+            background:rgba(255,255,255,0.15);
+        }
+        /*右下角托盘：网络、音量、电量、时间日期 */
+        .task-tray{
+            display:flex;
+            gap:8px;
+            align-items:center;
+            padding:0 14px;
+            font-size:14px;
+        }
+        .tray-icon{
+            font-size:16px;
+        }
+        .tray-time{
+            text-align:right;
+            font-size:12px;
+        }
+
+        /*开始菜单*/
+        .start-menu{
+            width:320px;
+            height:420px;
+            background:#2b579a;
+            position:fixed;
+            bottom:40px;
+            left:0;
+            display:none;
+            border:1px solid #1a3b70;
+            color:#fff;
+            padding:8px 0;
+        }
+        .start-menu.show{
+            display:block;
+        }
+        .start-item{
+            padding:8px 16px;
+            cursor:pointer;
+            display:flex;
+            gap:10px;
+            align-items:center;
+        }
+        .start-item:hover{
+            background:#4068a8;
+        }
+        .start-item img{
+            width:24px;
+            height:24px;
+            object-fit:contain;
+        }
+    </style>
+</head>
+<body>
+<script>
+// 只首次打开网站根网址跳开场，站内跳转不跳
+if(!sessionStorage.getItem("hasVisited")){
+    sessionStorage.setItem("hasVisited","1");
+    window.location.href = "open.html";
+}
+</script>
+
+<div class="desktop" id="desktop">
+    <!-- 桌面图标 -->
+    <div class="desktop-icon" style="top:20px;left:20px;" data-app="wechat">
+        <div class="icon-box">
+            <img src="./wechat.png" alt="薇信">
+        </div>
+        <span>薇信</span>
+    </div>
+    <div class="desktop-icon" style="top:110px;left:20px;" data-app="tieba">
+        <div class="icon-box">
+            <img src="./tieba.png" alt="贴吧">
+        </div>
+        <span>贴吧</span>
+    </div>
+    <div class="desktop-icon" style="top:200px;left:20px;" data-app="recycle">
+        <div class="icon-box">
+            <img src="./recycle.png" alt="回收站">
+        </div>
+        <span>回收站</span>
+    </div>
+    <!-- 解压后才显示：静愈心理医院 -->
+    <div class="desktop-icon" style="top:290px;left:20px;display:none;" id="jingyuIcon" data-app="jingyu">
+        <div class="icon-box">
+            <img src="./jingyu.png" alt="静愈心理医院">
+        </div>
+        <span>静愈心理医院</span>
+    </div>
+</div>
+
+<!--开始菜单-->
+<div class="start-menu" id="startMenu">
+    <div class="start-item" onclick="openWechat()">
+        <img src="./wechat.png">
+        <span>薇信</span>
+    </div>
+    <div class="start-item" onclick="location.href='tieba.html'">
+        <img src="./tieba.png">
+        <span>贴吧</span>
+    </div>
+    <div class="start-item" onclick="location.href='recycle.html'">
+        <img src="./recycle.png">
+        <span>回收站</span>
+    </div>
+</div>
+
+<!--任务栏，右下角托盘：网络🔌 音量🔊 电量🔋 时间+日期 -->
+<div class="taskbar">
+    <div class="start-btn" id="startBtn">ⓦ</div>
+    <div class="taskbar-apps" id="taskApps"></div>
+    <div class="task-tray">
+        <span class="tray-icon">🔌</span>
+        <span class="tray-icon">🔊</span>
+        <span class="tray-icon">🔋</span>
+        <div class="tray-time">
+            <div id="clockTime">00:00</div>
+            <div id="clockDate">2026/08/09</div>
+        </div>
+    </div>
+</div>
+
+<script>
+//====================安全防护脚本【复制到每一个html页面】====================
+//禁止鼠标右键
+document.oncontextmenu = function(){return false;};
+//屏蔽快捷键 F12、Ctrl+U、Ctrl+Shift+I、Ctrl+Shift+J
+document.onkeydown = function(e){
+    e = e || window.event;
+    if(e.keyCode===123) return false; //F12
+    if(e.ctrlKey && e.keyCode===85) return false; //Ctrl+U
+    if(e.ctrlKey && e.shiftKey && (e.keyCode===73||e.keyCode===74)) return false;
+};
+//禁止浏览器回退，无法返回上一页
+history.pushState(null, null, window.location.href);
+window.addEventListener('popstate', function () {
+    history.pushState(null, null, window.location.href);
+});
+//============================================================================
+
+//判断解压标记，显示静愈心理医院图标
+const jingyuIcon = document.getElementById("jingyuIcon");
+if(localStorage.getItem("unzipJingyu") === "true"){
+    jingyuIcon.style.display = "block";
+}
+
+// 时间+日期更新
+function updateClock(){
+    let d=new Date();
+    let hh = String(d.getHours()).padStart(2,'0');
+    let mm = String(d.getMinutes()).padStart(2,'0');
+    document.getElementById('clockTime').innerText = `${hh}:${mm}`;
+    document.getElementById('clockDate').innerText = `${d.getFullYear()}/${d.getMonth()+1}/${d.getDate()}`;
+}
+setInterval(updateClock,1000);
+updateClock();
+
+//开始菜单
+const startBtn=document.getElementById('startBtn');
+const startMenu=document.getElementById('startMenu');
+startBtn.onclick=()=>{
+    startMenu.classList.toggle('show');
+}
+document.getElementById('desktop').onclick=()=>{
+    startMenu.classList.remove('show');
+}
+
+//打开微信跳转 wechat.html
+function openWechat(){
+    location.href="wechat.html";
+}
+
+//桌面图标单击选中，双击打开
+document.querySelectorAll('.desktop-icon').forEach(el=>{
+    el.onclick=e=>{
+        e.stopPropagation();
+        document.querySelectorAll('.desktop-icon').forEach(i=>i.classList.remove('selected'));
+        el.classList.add('selected');
+    }
+    el.ondblclick=()=>{
+        if(el.dataset.app==="wechat"){
+            openWechat();
+        }else if(el.dataset.app==="tieba"){
+            location.href="tieba.html";
+        }else if(el.dataset.app==="recycle"){
+            location.href="recycle.html";
+        }else if(el.dataset.app==="jingyu"){
+            location.href="jingyu.html";
+        }
+    }
+})
+</script>
+</body>
+</html>
