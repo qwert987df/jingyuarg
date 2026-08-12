@@ -26,7 +26,10 @@ body{
     position:relative;
     overflow:hidden;
 }
-/* 背景模糊遮罩层：初始只占位，不模糊，无蒙版 */
+.text-line{
+    margin:8px 0;
+}
+/* 背景模糊遮罩层：透镜逻辑完全保留，不修改渐变 */
 #bgBlurLayer{
     position:fixed;
     inset:0;
@@ -103,7 +106,7 @@ const contentBlur = document.getElementById("contentBlur");
 const contentClear = document.getElementById("contentClear");
 const aud = document.getElementById("aud");
 
-//鼠标移动同步更新两处蒙版坐标
+//鼠标移动：统一转换坐标，背景层也转为相对于textWrap的偏移，保证文字光圈和背景光圈完全重合
 document.addEventListener('mousemove', function(e){
     if(!lensActive) return;
     const rect = textWrap.getBoundingClientRect();
@@ -111,8 +114,8 @@ document.addEventListener('mousemove', function(e){
     const my = `${e.clientY - rect.top}px`;
     textWrap.style.setProperty('--mx', mx);
     textWrap.style.setProperty('--my', my);
-    bgBlurLayer.style.setProperty('--mx', e.clientX+"px");
-    bgBlurLayer.style.setProperty('--my', e.clientY+"px");
+    bgBlurLayer.style.setProperty('--mx', mx);
+    bgBlurLayer.style.setProperty('--my', my);
 });
 
 document.body.addEventListener('click', function(){
