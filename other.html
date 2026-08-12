@@ -199,7 +199,7 @@ html,body{
     </div>
 </div>
 
-<!--上层：模糊副本，只保留静态文字，删除所有input/button控件 -->
+<!--上层：模糊副本，原样保留input和button，恢复原版 -->
 <div id="blur-layer">
     <div class="win-frame">
         <div class="win-titlebar">
@@ -230,13 +230,17 @@ html,body{
                 </div>
                 <div class="form-item">
                     <label>姓名</label>
+                    <input type="text">
                 </div>
                 <div class="form-item">
                     <label>生辰八字</label>
+                    <input type="text">
                 </div>
                 <div class="form-item">
                     <label>密钥</label>
+                    <input type="text">
                 </div>
+                <button class="submit-btn">确认提交</button>
             </div>
         </div>
     </div>
@@ -259,7 +263,7 @@ btnSubmit.onclick = ()=>{
     const n = inpName.value.trim();
     const b = inpBirth.value.trim();
     const k = inpKey.value.trim();
-    //手动重写字符串，清除隐藏零宽字符
+    //只修复：移除零宽隐藏字符，其余判断条件原样
     if(n === '沈从良' && b === '庚申癸未甲辰戊辰' && k === 'die'){
         location.href = 'real.html';
     }else{
